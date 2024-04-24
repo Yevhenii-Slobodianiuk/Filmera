@@ -1,5 +1,16 @@
-export { default as Actors } from "./Actors/Actors"
-export { default as MovieInformation } from "./MovieInformation/MovieInformation"
-export { default as Movies } from "./Movies/Movies"
-export { default as NavBar } from "./NavBar/NavBar"
-export { default as Profile } from "./Profile/Profile"
+import Actors from "./Actors/Actors"
+import MovieInformation from "./MovieInformation/MovieInformation"
+import Movies from "./Movies/Movies"
+import NavBar from "./NavBar/NavBar"
+import Profile from "./Profile/Profile"
+import Sidebar from "./Sidebar/Sidebar"
+
+export {
+	Actors,
+	MovieInformation,
+	Movies,
+	NavBar,
+	Profile,
+	Sidebar
+}
+
