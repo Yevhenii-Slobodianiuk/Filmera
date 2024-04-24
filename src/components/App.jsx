@@ -3,7 +3,7 @@ import { CssBaseline } from '@mui/material';
 import { Route, Routes } from 'react-router-dom';
 
 
-import {Actors, MovieInformation, Movies, NavBar, Profile} from "./"
+import { Actors, MovieInformation, Movies, NavBar, Profile } from "./"
 
 import { Root, Toolbar, Content } from './styles';
 
@@ -13,7 +13,7 @@ const App = () => {
 			<CssBaseline />
 			<NavBar />
 			<Content>
-			<Toolbar />
+				<Toolbar />
 				<Routes>
 					<Route path="/" element={<Movies />} />
 					<Route path="movie/:id" element={<MovieInformation />} />

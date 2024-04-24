@@ -14,5 +14,5 @@ const Content = styled("main")(() => ({
 	padding: "2em",
 }))
 
-export {Root, Toolbar, Content}
+export { Root, Toolbar, Content }
 
