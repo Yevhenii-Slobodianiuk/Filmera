@@ -4,48 +4,55 @@ import { Link } from "react-router-dom";
 
 import redLogo from "../../assets/redLogo.png"
 import blueLogo from "../../assets/blueLogo.png"
+import { useGetGenresQuery } from "../../services/TMDB";
+import genreIcons from "../../assets/genres"
 
 import { useStyles } from "./styles";
 
-const demoCategories = [
-	{ label: "Comedy", value: "comedy" },
-	{ label: "Action", value: "action" },
-	{ label: "Horror", value: "horror" },
-	{ label: "Animation", value: "animation" },
-];
-const generalCategories = [
+const categories = [
 	{ label: "Popular", value: "popular" },
-	{ label: "Top Rated", value: "top_rated" },
-	{ label: "Upcoming", value: "upcoming" }
-];
-
-// const blueLogo = 'https://fontmeme.com/permalink/210930/8531c658a743debe1e1aa1a2fc82006e.png';
-// const redLogo = 'https://fontmeme.com/permalink/210930/6854ae5c7f76597cf8680e48a2c8a50a.png';
-
-// const redLogo = "../../assets/redLogo.png";
-// const blueLogo = "../../assets/blueLogo.png"
+	{ label: "Top Rated", value: "topRated" },
+	{ label: "Upcoming", value: "upcoming" },
+]
 
 const Sidebar = () => {
 	const theme = useTheme();
 	const styles = useStyles();
+	const { data, isFetching } = useGetGenresQuery();
 
-	const renderCategories = (categories) => {
-		return categories.map(({ label, value }) => (
-			<Link key={value} style={styles.links}>
-				<ListItem>
-					<ListItemButton onClick={() => { }}>
-						{/* <ListItemIcon>
-						<styles.GenreImage src={blueLogo} alt="" height={30} />
-					</ListItemIcon> */}
-						<ListItemText primary={label} />
-					</ListItemButton>
-				</ListItem>
-			</Link>
-		))
+	const renderFilters = (filters) => {
+		return isFetching ? (
+			<Box display="flex" justifyContent="center">
+				<CircularProgress />
+			</Box>
+		) : filters.genres ?
+			filters.genres.map(({ id, name }) => (
+				<Link key={id} style={styles.links}>
+					<ListItem>
+						<ListItemButton onClick={() => { }}>
+							<ListItemIcon>
+								<styles.GenreImage src={genreIcons[name.toLowerCase()]} alt="" height={30} />
+							</ListItemIcon>
+							<ListItemText primary={name} />
+						</ListItemButton>
+					</ListItem>
+				</Link>
+			)) : filters.map(({ label, value }) => (
+					<Link key={value} style={styles.links}>
+						<ListItem>
+							<ListItemButton onClick={() => { }}>
+								<ListItemIcon>
+									<styles.GenreImage src={genreIcons[label.toLowerCase()]} alt="" height={30} />
+								</ListItemIcon>
+								<ListItemText primary={label} />
+							</ListItemButton>
+						</ListItem>
+					</Link>
+				))
 	}
 
-	const renderGeneralCategories = renderCategories(generalCategories);
-	const renderDemoCategories = renderCategories(demoCategories)
+	const renderCategories = renderFilters(categories);
+	const renderGenres = renderFilters(data)
 
 	return (
 		<>
@@ -58,12 +65,12 @@ const Sidebar = () => {
 			<Divider />
 			<List>
 				<ListSubheader>Categories</ListSubheader>
-				{renderGeneralCategories}
+				{renderCategories}
 			</List>
 			<Divider />
 			<List>
 				<ListSubheader>Genres</ListSubheader>
-				{renderDemoCategories}
+				{renderGenres}
 			</List>
 		</>
 	)
