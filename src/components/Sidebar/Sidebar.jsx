@@ -2,6 +2,9 @@
 import { Divider, List, ListItem, ListItemText, ListSubheader, ListItemIcon, Box, CircularProgress, useTheme, ListItemButton } from "@mui/material";
 import { Link } from "react-router-dom";
 
+import redLogo from "../../assets/redLogo.png"
+import blueLogo from "../../assets/blueLogo.png"
+
 import { useStyles } from "./styles";
 
 const demoCategories = [
@@ -16,8 +19,11 @@ const generalCategories = [
 	{ label: "Upcoming", value: "upcoming" }
 ];
 
-const blueLogo = 'https://fontmeme.com/permalink/210930/8531c658a743debe1e1aa1a2fc82006e.png';
-const redLogo = 'https://fontmeme.com/permalink/210930/6854ae5c7f76597cf8680e48a2c8a50a.png';
+// const blueLogo = 'https://fontmeme.com/permalink/210930/8531c658a743debe1e1aa1a2fc82006e.png';
+// const redLogo = 'https://fontmeme.com/permalink/210930/6854ae5c7f76597cf8680e48a2c8a50a.png';
+
+// const redLogo = "../../assets/redLogo.png";
+// const blueLogo = "../../assets/blueLogo.png"
 
 const Sidebar = () => {
 	const theme = useTheme();
