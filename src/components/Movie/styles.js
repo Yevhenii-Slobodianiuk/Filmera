@@ -40,6 +40,7 @@ export const useStyles = () => {
 		marginTop: "10px",
 		marginBottom: 0,
 		textAlign: "center",
+		position: "relative",
 	}))
 
 	return { Movie, Title, links, Image }
