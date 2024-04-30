@@ -7,7 +7,7 @@ const Movie = ({ movie, id, i }) => {
 	const styles = useStyles();
 
 	return (
-		<styles.Movie item xs={12} sm={12} md={4} lg={3} xl={2}>
+		<styles.Movie item xs={12} sm={6} md={4} lg={3} xl={2}>
 			<Grow in timeout={(i + 1) * 200}>
 				<Link to={`/movie/${id}`} style={styles.links}>
 					<styles.Image src={movie.poster_path ?

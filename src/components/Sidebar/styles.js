@@ -1,5 +1,4 @@
 import { useTheme, styled } from "@mui/material";
-import zIndex from "@mui/material/styles/zIndex";
 
 export const useStyles = () => {
 	const theme = useTheme();
@@ -18,11 +17,16 @@ export const useStyles = () => {
 	const links = {
 		color: theme.palette.text.primary,
 		textDecoration: "none",
-	}
+}
 
-	const GenreImage = styled("img")(({ theme }) => ({
-		filter: theme.palette.mode === "dark" ? "invert(1)" : "dark"
-	}))
+const activeLink = {
+	borderRadius: "15px",
+	boxShadow: "0px 0px 6px 1px rgba(0,0,0,0.75)",
+}
 
-	return { imageLink, Image, links, GenreImage }
+const GenreImage = styled("img")(({ theme }) => ({
+	filter: theme.palette.mode === "dark" ? "invert(1)" : "dark"
+}))
+
+return { imageLink, Image, links, GenreImage, activeLink }
 }

@@ -5,9 +5,9 @@ export const useStyles = () => {
 	const MoviesContainer = styled(Grid)(({theme}) => ({
 		display: "flex",
 		flexWrap: "wrap",
-		justifyContent: "space-between",
+		justifyContent: "space-around",
 		// overflow: "auto",
-		[theme.breakpoints.down("sm")]: {
+		[theme.breakpoints.down("md")]: {
 			justifyContent: "center",
 		}
 	}))

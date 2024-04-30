@@ -1,4 +1,3 @@
-// import { useEffect } from "react";
 import { Divider, List, ListItem, ListItemText, ListSubheader, ListItemIcon, Box, CircularProgress, useTheme, ListItemButton } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,31 +21,38 @@ const Sidebar = () => {
 	const styles = useStyles();
 	const { data, isFetching } = useGetGenresQuery();
 	const dispatch = useDispatch();
-	const { genreIdOrCategoryName } = useSelector(state => state.genreOrCategory);
+	const { genreIdOrCategoryName } = useSelector(state => state.genreOrCategory)
 
 	const handleSelectGenreOrCategory = (value) => {
 		dispatch(selectGenreOrCategory(value))
 	}
 
-	const renderFilters = (filters) => {
-		return isFetching ? (
+	if (isFetching) {
+		return (
 			<Box display="flex" justifyContent="center">
 				<CircularProgress />
 			</Box>
-		) : filters.genres ?
-			filters.genres.map(({ id, name }) => (
-				<Link key={id} style={styles.links}>
-					<ListItem>
-						<ListItemButton onClick={() => handleSelectGenreOrCategory(id)}>
-							<ListItemIcon>
-								<styles.GenreImage src={genreIcons[name.toLowerCase()]} alt="" height={30} />
-							</ListItemIcon>
-							<ListItemText primary={name} />
-						</ListItemButton>
-					</ListItem>
-				</Link>
-			)) : filters.map(({ label, value }) => (
-				<Link key={value} style={styles.links}>
+		)
+	}
+
+	const prepareCategories = (categories) => {
+		return categories.map(({ label, value }) => {
+			if (genreIdOrCategoryName === value) {
+				return (
+					<Link key={value} style={styles.links} to="/">
+						<ListItem>
+							<ListItemButton style={styles.activeLink} onClick={() => handleSelectGenreOrCategory(value)}>
+								<ListItemIcon>
+									<styles.GenreImage src={genreIcons[label.toLowerCase()]} alt="" height={30} />
+								</ListItemIcon>
+								<ListItemText primary={label} />
+							</ListItemButton>
+						</ListItem>
+					</Link>
+				)
+			}
+			return (
+				<Link key={value} style={styles.links} to="/">
 					<ListItem>
 						<ListItemButton onClick={() => handleSelectGenreOrCategory(value)}>
 							<ListItemIcon>
@@ -56,11 +62,44 @@ const Sidebar = () => {
 						</ListItemButton>
 					</ListItem>
 				</Link>
-			))
+			)
+		})
 	}
 
-	const renderCategories = renderFilters(categories);
-	const renderGenres = renderFilters(data)
+	const renderCategories = prepareCategories(categories);
+
+	const prepareGenres = (data) => {
+		return data.genres.map(({ id, name }) => {
+			if (genreIdOrCategoryName === id) {
+				return (
+					<Link key={id} style={styles.links} to="/">
+						<ListItem>
+							<ListItemButton style={styles.activeLink} onClick={() => handleSelectGenreOrCategory(id)}>
+								<ListItemIcon>
+									<styles.GenreImage src={genreIcons[name.toLowerCase()]} alt="" height={30} />
+								</ListItemIcon>
+								<ListItemText primary={name} />
+							</ListItemButton>
+						</ListItem>
+					</Link>
+				)
+			}
+			return (
+				<Link key={id} style={styles.links} to="/">
+					<ListItem>
+						<ListItemButton onClick={() => handleSelectGenreOrCategory(id)}>
+							<ListItemIcon>
+								<styles.GenreImage src={genreIcons[name.toLowerCase()]} alt="" height={30} />
+							</ListItemIcon>
+							<ListItemText primary={name} />
+						</ListItemButton>
+					</ListItem>
+				</Link>
+			)
+		})
+	}
+
+	const renderGenres = prepareGenres(data);
 
 	return (
 		<>
