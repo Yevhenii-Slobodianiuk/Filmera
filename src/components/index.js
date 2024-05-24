@@ -9,6 +9,6 @@ export {
 	MovieInformation,
 	Movies,
 	NavBar,
-	Profile,
+	Profile
 }
 

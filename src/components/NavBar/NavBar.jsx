@@ -21,6 +21,7 @@ const NavBar = () => {
 
 	const token = localStorage.getItem("request_token");
 	const sessionIdFromLocalStorage = localStorage.getItem("session_id");
+	const containsApproved = window.location.href.includes("approved");
 
 	useEffect(() => {
 		const logInUser = async () => {
@@ -30,6 +31,7 @@ const NavBar = () => {
 					sessionId = await createSessionId();
 				}
 				if (sessionId) {
+
 					try {
 						const { data: userData } = await moviesApi.get(`/account?session_id=${sessionId}`);
 						dispatch(setUser(userData));
@@ -37,6 +39,9 @@ const NavBar = () => {
 						console.error("Failed to fetch user data:", error);
 					}
 				}
+			}
+			if (containsApproved) {
+				window.location.href = "/"
 			}
 		};
 
