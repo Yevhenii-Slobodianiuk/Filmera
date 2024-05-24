@@ -1,10 +1,13 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AppBar, IconButton, Drawer, Avatar, useMediaQuery, useTheme } from '@mui/material';
 import { Menu, AccountCircle, Brightness4, Brightness7 } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Sidebar from '../Sidebar/Sidebar';
 import Search from '../Search/Search';
+import { fetchToken, createSessionId, moviesApi } from '../../utils';
+import { setUser, userSelector } from '../../features/auth';
 
 import { useStyles } from './styles';
 
@@ -13,7 +16,32 @@ const NavBar = () => {
 	const isMobile = useMediaQuery("(max-width:600px)");
 	const theme = useTheme();
 	const styles = useStyles();
-	const isAuthenticated = true;
+	const dispatch = useDispatch();
+	const { isAuthenticated, user } = useSelector(userSelector)
+
+	const token = localStorage.getItem("request_token");
+	const sessionIdFromLocalStorage = localStorage.getItem("session_id");
+
+	useEffect(() => {
+		const logInUser = async () => {
+			if (token) {
+				let sessionId = sessionIdFromLocalStorage;
+				if (!sessionId) {
+					sessionId = await createSessionId();
+				}
+				if (sessionId) {
+					try {
+						const { data: userData } = await moviesApi.get(`/account?session_id=${sessionId}`);
+						dispatch(setUser(userData));
+					} catch (error) {
+						console.error("Failed to fetch user data:", error);
+					}
+				}
+			}
+		};
+
+		logInUser();
+	}, [token, dispatch, sessionIdFromLocalStorage]);
 
 	return (
 		<>
@@ -41,7 +69,7 @@ const NavBar = () => {
 						{!isAuthenticated ? (
 							<styles.LinkButton
 								color="inherit"
-								onClick={() => { }}
+								onClick={fetchToken}
 							>
 								Login &nbsp; <AccountCircle />
 							</styles.LinkButton>
@@ -49,7 +77,7 @@ const NavBar = () => {
 							<styles.LinkButton
 								color="inherit"
 								component={Link}
-								to={"profile/:id"}
+								to={`profile/${user.id}`}
 								onClick={() => { }}
 							>
 								{!isMobile && <>My Movies &nbsp;</>}

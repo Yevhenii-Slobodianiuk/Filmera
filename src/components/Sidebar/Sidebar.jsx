@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 import redLogo from "../../assets/redLogo.png"
 import blueLogo from "../../assets/blueLogo.png"
-import { useGetGenresQuery } from "../../services/TMDB";
 import genreIcons from "../../assets/genres"
+import { useGetGenresQuery } from "../../services/TMDB";
 import { selectGenreOrCategory } from "../../features/currentGenreOrCategory";
 
 import { useStyles } from "./styles";
