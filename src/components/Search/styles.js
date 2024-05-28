@@ -19,17 +19,5 @@ export const useStyles = () => {
 		}
 	}))
 
-	// const SearchInput = styled("input")(({theme}) => ({
-	// 	color: theme.palette.mode === "light" && "black",
-	// 	filter: theme.palette.mode === "light" && "invert(1)",
-	// 	backgroundColor: "transparent",
-	// 	border: "none",
-	// 	borderBottom: "3px solid #fff",
-	// 	[theme.breakpoints.down("sm")]: {
-	// 		marginTop: "-10px",
-	// 		marginBottom: "10px",
-	// 	}
-	// }))
-
 	return { SearchContainer, SearchInput }
 }
