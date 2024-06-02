@@ -5,9 +5,10 @@ import { Link, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 
-import { useGetMovieQuery } from '../../services/TMDB';
+import { useGetMovieQuery, useGetRecommendationsQuery } from '../../services/TMDB';
 import { selectGenreOrCategory } from '../../features/currentGenreOrCategory';
 import genreIcons from "../../assets/genres"
+import MovieList from '../MovieList/MovieList';
 import { useStyles } from './styles';
 
 const MovieInformation = () => {
@@ -17,6 +18,9 @@ const MovieInformation = () => {
 	const dispatch = useDispatch();
 	const isMovieFavorite = false;
 	const isMovieWatchListed = false;
+	const { data: recommendations, isFetching: isRecommendationsFetching, error: isRecommendationsError } = useGetRecommendationsQuery({movieId: id,list: "recommendations"});
+
+	console.log(recommendations)
 
 	const addToFavorites = () => {
 
@@ -216,6 +220,14 @@ const MovieInformation = () => {
 					</styles.ButtonsContainer>
 				</Grid>
 			</Grid>
+			<Box marginTop="5rem" width="100%">
+					<Typography variant="h3" gutterBottom align="center">
+						You might also like
+					</Typography>
+					{
+						recommendations ? <MovieList movies={recommendations} /> : <Box>Sorry, nothing was found</Box>
+					}
+			</Box>
 		</styles.ContainerSpaceAround>
 	)
 }
