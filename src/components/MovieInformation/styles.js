@@ -1,5 +1,4 @@
-import { useTheme } from "@mui/material";
-import { Grid, styled } from "@mui/material";
+import { Modal, useTheme, Grid, styled } from "@mui/material";
 
 export const useStyles = () => {
 	const theme = useTheme();
@@ -77,6 +76,21 @@ export const useStyles = () => {
 		},
 	}))
 
+	const CustomModal = styled(Modal)(({ theme }) => ({
+		display: "flex",
+		alignItems: "center",
+		justifyContent: "center",
+	}))
+
+	const Video = styled("iframe")(({ theme }) => ({
+		width: "50%",
+		height: "50%",
+		[theme.breakpoints.down("sm")]: {
+			width: "90%",
+			height: "90%",
+		},
+	}))
+
 	return {
 		ContainerSpaceAround,
 		Poster,
@@ -84,6 +98,8 @@ export const useStyles = () => {
 		GenreContainer,
 		links,
 		CastImage,
-		ButtonsContainer
+		ButtonsContainer,
+		CustomModal,
+		Video
 	}
 }

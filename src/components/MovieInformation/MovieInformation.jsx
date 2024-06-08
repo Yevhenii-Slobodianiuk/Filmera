@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import { Typography, Button, ButtonGroup, Grid, Box, CircularProgress, Tooltip, Rating } from '@mui/material';
 import { Theaters, Language, PlusOne, FavoriteBorderOutlined, Remove, ArrowBack, Movie, Favorite } from "@mui/icons-material";
 import { Link, useParams } from 'react-router-dom';
@@ -12,15 +12,14 @@ import MovieList from '../MovieList/MovieList';
 import { useStyles } from './styles';
 
 const MovieInformation = () => {
+	const [open, setOpen] = useState(false);
 	const { id } = useParams();
 	const { data, isFetching, error } = useGetMovieQuery(id);
 	const styles = useStyles();
 	const dispatch = useDispatch();
 	const isMovieFavorite = false;
 	const isMovieWatchListed = false;
-	const { data: recommendations, isFetching: isRecommendationsFetching, error: isRecommendationsError } = useGetRecommendationsQuery({movieId: id,list: "recommendations"});
-
-	console.log(recommendations)
+	const { data: recommendations, isFetching: isRecommendationsFetching, error: isRecommendationsError } = useGetRecommendationsQuery({ movieId: id, list: "recommendations" });
 
 	const addToFavorites = () => {
 
@@ -180,7 +179,7 @@ const MovieInformation = () => {
 									IMDB
 								</Button>
 								<Button
-									onClick={() => { }}
+									onClick={() => setOpen(true)}
 									href="#"
 									endIcon={<Theaters />}
 								>
@@ -221,13 +220,28 @@ const MovieInformation = () => {
 				</Grid>
 			</Grid>
 			<Box marginTop="5rem" width="100%">
-					<Typography variant="h3" gutterBottom align="center">
-						You might also like
-					</Typography>
-					{
-						recommendations ? <MovieList movies={recommendations} /> : <Box>Sorry, nothing was found</Box>
-					}
+				<Typography variant="h3" gutterBottom align="center">
+					You might also like
+				</Typography>
+				{
+					recommendations ? <MovieList movies={recommendations} /> : <Box>Sorry, nothing was found</Box>
+				}
 			</Box>
+			{console.log(data?.videos?.results)}
+			<styles.CustomModal
+				closeAfterTransition
+				open={open}
+				onClose={() => setOpen(false)}
+			>
+				{data?.videos?.results?.length > 0 && (
+					<styles.Video
+						src={`https://www.youtube.com/embed/${data.videos.results[0].key}`}
+						allow="autoplay"
+						autoPlay
+						title="Trailer"
+					/>
+				)}
+			</styles.CustomModal>
 		</styles.ContainerSpaceAround>
 	)
 }
