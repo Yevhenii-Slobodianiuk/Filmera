@@ -1,12 +1,12 @@
 import Movie from "../Movie/Movie";
 import { useStyles } from "./styles";
 
-const MovieList = ({ movies }) => {
+const MovieList = ({ movies, numberOfMovies }) => {
 	const styles = useStyles();
 
 	return (
 		<styles.MoviesContainer container gap={2}>
-			{movies.results.map((movie, i) => {
+			{movies.results.slice(0, numberOfMovies).map((movie, i) => {
 				return (
 					<Movie key={movie.id} movie={movie} i={i} id={movie.id} />
 				)

@@ -1,16 +1,19 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Grid, Typography, Box, CircularProgress, Button } from "@mui/material";
 import { ArrowBack, Movie } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 
-import { useGetActorQuery } from "../../services/TMDB";
+import MovieList from "../MovieList/MovieList";
+import { useGetActorQuery, useGetMovieByActorIdQuery } from "../../services/TMDB";
 import { useStyles } from "./styles";
 
 const Actors = () => {
 	const { id } = useParams();
+	const page = 1;
+	const { data: movieWithActorData, isFetching: isFetchingMovieWithActor, isError: isErrorMovieWithActor } = useGetMovieByActorIdQuery({actorId: id, page: page})
+	const navigate = useNavigate();
 	const { data, isFetching, isError } = useGetActorQuery(id)
 	const styles = useStyles()
-	console.log(data)
 
 	const handleMauseMove = (e) => {
 		const element = e.target;
@@ -60,55 +63,64 @@ const Actors = () => {
 	}
 
 	return (
-		<styles.ContainerSpaceAround container>
-			<Grid item sm={12} lg={4}>
-				<styles.Poster
-					onMouseMove={(e) => handleMauseMove(e)}
-					onMouseOut={(e) => handleMouseOut(e)}
-					onMouseDown={(e) => handleMouseDown(e)}
-					onMouseUp={(e) => handleMouseUp(e)}
-					src={`https://image.tmdb.org/t/p/w500/${data?.profile_path}`} alt={data?.name}
-				/>
-			</Grid>
-			<Grid item container direction="column" lg={7}>
-				<Typography variant="h3" gutterBottom>
-					{data?.name}
+		<>
+			<styles.ContainerSpaceAround container>
+				<Grid item sm={12} lg={4}>
+					<styles.Poster
+						onMouseMove={(e) => handleMauseMove(e)}
+						onMouseOut={(e) => handleMouseOut(e)}
+						onMouseDown={(e) => handleMouseDown(e)}
+						onMouseUp={(e) => handleMouseUp(e)}
+						src={`https://image.tmdb.org/t/p/w500/${data?.profile_path}`} alt={data?.name}
+					/>
+				</Grid>
+				<Grid item container direction="column" lg={7}>
+					<Typography variant="h3" gutterBottom>
+						{data?.name}
+					</Typography>
+					<Typography variant="h5" gutterBottom sx={{ mt: "10px" }}>
+						Born: {new Date(data?.birthday).toDateString()}
+					</Typography>
+					<Typography sx={{ mb: "2rem" }}>
+						{data?.biography}
+					</Typography>
+					<styles.ButtonsGroup>
+						<styles.ButtonsContainer>
+							<Button
+								size="medium" variant="contained"
+								target="_blank"
+								rel="noopener norefer"
+								href={`https://www.imdb.com/name/${data?.imdb_id}`}
+								endIcon={<Movie />}
+							>
+								IMDB
+							</Button>
+							<Button
+								size="medium" variant="text"
+								endIcon={<ArrowBack />}
+								sx={{ borderColor: "primary.main" }}
+								onClick={() => navigate(-1)}
+							>
+								<Typography
+									color="inherit"
+									variant="subtitle2"
+									sx={{ textDecoration: "none" }}>
+									Back
+								</Typography>
+							</Button>
+						</styles.ButtonsContainer>
+					</styles.ButtonsGroup>
+				</Grid>
+			</styles.ContainerSpaceAround>
+			<Box marginTop="5rem" width="100%">
+				<Typography variant="h3" gutterBottom align="center">
+					Movies
 				</Typography>
-				<Typography variant="h5" gutterBottom sx={{ mt: "10px" }}>
-					Born: {data?.birthday}
-				</Typography>
-				<Typography sx={{ mb: "2rem" }}>
-					{data?.biography}
-				</Typography>
-				<styles.ButtonsGroup>
-					<styles.ButtonsContainer>
-						<Button
-							size="medium" variant="contained"
-							target="_blank"
-							rel="noopener norefer"
-							href={`https://www.imdb.com/name/${data?.imdb_id}`}
-							endIcon={<Movie />}
-						>
-							IMDB
-						</Button>
-						<Button
-							size="medium" variant="text"
-							endIcon={<ArrowBack />}
-							sx={{ borderColor: "primary.main" }}
-						>
-							<Typography
-								component={Link}
-								to="/"
-								color="inherit"
-								variant="subtitle2"
-								sx={{ textDecoration: "none" }}>
-								Back
-							</Typography>
-						</Button>
-					</styles.ButtonsContainer>
-				</styles.ButtonsGroup>
-			</Grid>
-		</styles.ContainerSpaceAround>
+				{
+					movieWithActorData ? <MovieList movies={movieWithActorData} numberOfMovies={10}/> : <Box>Sorry, nothing was found</Box>
+				}
+			</Box>
+		</>
 	)
 }
 
