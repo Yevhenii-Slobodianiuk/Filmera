@@ -22,7 +22,6 @@ const Movie = ({ movie, id, i }) => {
 					</Tooltip>
 				</Link>
 			</Grow>
-
 		</styles.Movie>
 	)
 }

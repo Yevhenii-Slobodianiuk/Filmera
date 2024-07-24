@@ -1,32 +1,67 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Typography, Button, ButtonGroup, Grid, Box, CircularProgress, Tooltip, Rating } from '@mui/material';
 import { Theaters, Language, PlusOne, FavoriteBorderOutlined, Remove, ArrowBack, Movie, Favorite } from "@mui/icons-material";
 import { Link, useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 
 
-import { useGetMovieQuery, useGetRecommendationsQuery } from '../../services/TMDB';
+
+import { useGetListQuery, useGetMovieQuery, useGetRecommendationsQuery } from '../../services/TMDB';
 import { selectGenreOrCategory } from '../../features/currentGenreOrCategory';
+import { userSelector } from '../../features/auth';
 import genreIcons from "../../assets/genres"
 import MovieList from '../MovieList/MovieList';
 import { useStyles } from './styles';
 
 const MovieInformation = () => {
+	const { user } = useSelector(userSelector);
 	const [open, setOpen] = useState(false);
 	const { id } = useParams();
-	const { data, isFetching, error } = useGetMovieQuery(id);
 	const styles = useStyles();
 	const dispatch = useDispatch();
-	const isMovieFavorite = false;
-	const isMovieWatchListed = false;
-	const { data: recommendations, isFetching: isRecommendationsFetching, error: isRecommendationsError } = useGetRecommendationsQuery({ movieId: id, list: "recommendations" });
+	const [isMovieFavorited, setIsMovieFavorited] = useState(false);
+	const [isMovieWatchListed, setIsMovieWatchListed] = useState(false);
 
-	const addToFavorites = () => {
+	const { data, isFetching, error } = useGetMovieQuery(id);
+	const { data: favoriteMovies } = useGetListQuery({ listName: "favorite/movies", accountId: localStorage.getItem("accountId"), sessionId: localStorage.getItem("session_id"), page: 1 })
+	const { data: watchlistMovies } = useGetListQuery({ listName: "watchlist/movies", accountId: localStorage.getItem("accountId"), sessionId: localStorage.getItem("session_id"), page: 1 })
+	const { data: recommendations } = useGetRecommendationsQuery({ movieId: id, list: "recommendations" });
 
+	useEffect(() => {
+		setIsMovieFavorited(!!favoriteMovies?.results?.find(movie => movie?.id === data?.id));
+	}, [favoriteMovies, data]);
+
+	useEffect(() => {
+		setIsMovieWatchListed(!!watchlistMovies?.results?.find(movie => movie?.id === data?.id));
+	}, [watchlistMovies, data]);
+
+	const favoriteOptions = {
+		media_type: "movie",
+		media_id: id,
+		favorite: !isMovieFavorited
 	}
 
-	const addToWatchList = () => {
+	const watchlistOptions = {
+		media_type: "movie",
+		media_id: id,
+		watchlist: !isMovieWatchListed
+	}
 
+	const addToFavorites = async () => {
+		try {
+			const response = await axios.post(`https://api.themoviedb.org/3/account/${user.id}/favorite?api_key=${process.env.REACT_APP_TBDB_KEY}&session_id=${localStorage.getItem("session_id")}`, favoriteOptions)
+			console.log('Favorite response:', response)
+			setIsMovieFavorited((prev) => !prev);
+		} catch (error) {
+			console.error('Error adding to favorites:', error);
+		}
+	}
+
+	const addToWatchList = async () => {
+		await axios.post(`https://api.themoviedb.org/3/account/${user.id}/watchlist?api_key=${process.env.REACT_APP_TBDB_KEY}&session_id=${localStorage.getItem("session_id")}`, watchlistOptions)
+
+		setIsMovieWatchListed((prev) => !prev);
 	}
 
 	const handleMauseMove = (e) => {
@@ -191,9 +226,9 @@ const MovieInformation = () => {
 							<ButtonGroup size="medium" variant="outlined">
 								<Button
 									onClick={addToFavorites}
-									endIcon={isMovieFavorite ? <FavoriteBorderOutlined /> : <Favorite />}
+									endIcon={isMovieFavorited ? <FavoriteBorderOutlined /> : <Favorite />}
 								>
-									{isMovieFavorite ? "Unfavorite" : "Favorite"}
+									{isMovieFavorited ? "Unfavorite" : "Favorite"}
 								</Button>
 								<Button
 									onClick={addToWatchList}
@@ -227,7 +262,6 @@ const MovieInformation = () => {
 					recommendations ? <MovieList movies={recommendations} /> : <Box>Sorry, nothing was found</Box>
 				}
 			</Box>
-			{console.log(data?.videos?.results)}
 			<styles.CustomModal
 				closeAfterTransition
 				open={open}
