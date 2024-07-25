@@ -21,7 +21,7 @@ export const useStyles = () => {
 
 	const activeLink = {
 		borderRadius: "15px",
-		boxShadow: "0px 0px 6px 1px rgba(0,0,0,0.75)",
+		boxShadow: theme.palette.mode === "light" ? "0px 0px 6px 1px rgba(0,0,0,0.75)" : "0px 0px 6px 1px rgba(255,255,255, 0.3)",
 	}
 
 	const GenreImage = styled("img")(({ theme }) => ({
