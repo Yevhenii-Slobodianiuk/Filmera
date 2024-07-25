@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Typography, Button, ButtonGroup, Grid, Box, CircularProgress, Tooltip, Rating } from '@mui/material';
 import { Theaters, Language, PlusOne, FavoriteBorderOutlined, Remove, ArrowBack, Movie, Favorite } from "@mui/icons-material";
 import { Link, useParams } from 'react-router-dom';
@@ -24,7 +24,7 @@ const MovieInformation = () => {
 	const [isMovieWatchListed, setIsMovieWatchListed] = useState(false);
 
 	const { data, isFetching, error } = useGetMovieQuery(id);
-	const { data: favoriteMovies } = useGetListQuery({ listName: "favorite/movies", accountId: localStorage.getItem("accountId"), sessionId: localStorage.getItem("session_id"), page: 1 })
+	const { data: favoriteMovies } = useGetListQuery({ listName: "favorite/movies", accountId: localStorage.getItem("accountId"), sessionId: localStorage.getItem("session_id"), page: 1 });
 	const { data: watchlistMovies } = useGetListQuery({ listName: "watchlist/movies", accountId: localStorage.getItem("accountId"), sessionId: localStorage.getItem("session_id"), page: 1 })
 	const { data: recommendations } = useGetRecommendationsQuery({ movieId: id, list: "recommendations" });
 

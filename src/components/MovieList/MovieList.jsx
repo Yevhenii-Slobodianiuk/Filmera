@@ -6,7 +6,7 @@ const MovieList = ({ movies, numberOfMovies }) => {
 
 	return (
 		<styles.MoviesContainer container gap={2}>
-			{movies.results.slice(0, numberOfMovies).map((movie, i) => {
+			{movies.results.slice(1, numberOfMovies).map((movie, i) => {
 				return (
 					<Movie key={movie.id} movie={movie} i={i} id={movie.id} />
 				)

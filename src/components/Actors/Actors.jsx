@@ -123,7 +123,7 @@ const Actors = () => {
 					movieWithActorData ? <MovieList movies={movieWithActorData} numberOfMovies={10}/> : <Box>Sorry, nothing was found</Box>
 				}
 			</Box>
-			<Pagination currentPage={page} setPage={setPage} totalPages={movieWithActorData.total_pages}/>
+			<Pagination currentPage={page} setPage={setPage} totalPages={movieWithActorData?.total_pages}/>
 		</>
 	)
 }
