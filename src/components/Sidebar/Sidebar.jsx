@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Divider, List, ListItem, ListItemText, ListSubheader, ListItemIcon, Box, CircularProgress, useTheme, ListItemButton } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,7 +17,7 @@ const categories = [
 	{ label: "Upcoming", value: "upcoming" },
 ]
 
-const Sidebar = () => {
+const Sidebar = ({ setMobileOpen }) => {
 	const theme = useTheme();
 	const styles = useStyles();
 	const { data, isFetching } = useGetGenresQuery();
