@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { Divider, List, ListItem, ListItemText, ListSubheader, ListItemIcon, Box, CircularProgress, useTheme, ListItemButton } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,12 +24,9 @@ const Sidebar = ({ setMobileOpen }) => {
 	const dispatch = useDispatch();
 	const { genreIdOrCategoryName } = useSelector(state => state.genreOrCategory);
 
-	useEffect(() => {
-		setMobileOpen((prev) => !prev)
-	}, [genreIdOrCategoryName])
-
 	const handleSelectGenreOrCategory = (value) => {
 		dispatch(selectGenreOrCategory(value))
+		setMobileOpen(false);
 	}
 
 	if (isFetching) {

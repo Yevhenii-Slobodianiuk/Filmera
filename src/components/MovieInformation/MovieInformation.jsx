@@ -121,7 +121,7 @@ const MovieInformation = () => {
 					src={`https://image.tmdb.org/t/p/w500/${data?.poster_path}`} alt={data?.title}
 				/>
 			</Grid>
-			<Grid item container direction="column" lg={7}>
+			<Grid item container direction="column" lg={6}>
 				<Typography variant="h3" align="center" gutterBottom>
 					{`${data?.title} (${(data.release_date.split("-")[0])})`}
 				</Typography>

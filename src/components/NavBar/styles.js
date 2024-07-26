@@ -10,7 +10,7 @@ export const useStyles = () => {
 		marginLeft: "240px",
 		[theme.breakpoints.down("sm")]: {
 			marginLeft: 0,
-			flexWrap: "wrap"
+			flexWrap: "wrap",
 		}
 	}))
 

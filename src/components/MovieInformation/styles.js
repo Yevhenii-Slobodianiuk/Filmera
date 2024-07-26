@@ -1,4 +1,5 @@
 import { Modal, useTheme, Grid, styled } from "@mui/material";
+import { width } from "@mui/system";
 
 export const useStyles = () => {
 	const theme = useTheme();
@@ -6,8 +7,9 @@ export const useStyles = () => {
 	const ContainerSpaceAround = styled(Grid)(({ theme }) => ({
 		display: "flex",
 		justifyContent: "space-around",
-		margin: "10px 0 10px 10px !important",
+		margin: "10px auto !important",
 		[theme.breakpoints.down("sm")]: {
+			width: "300px",
 			flexDirection: "column",
 			flexWrap: "wrap",
 		}
@@ -26,10 +28,10 @@ export const useStyles = () => {
 		alignItems: "center",
 		color: theme.palette.text.primary,
 		textDecoration: "none",
-		gap: "10px"
-		// [theme.breakpoints.down("sm")]: {
-		// 	padding: "0.5rem 1rem"
-		// },
+		gap: "10px",
+		[theme.breakpoints.down("sm")]: {
+			padding: "0.5rem 1rem"
+		},
 	}
 
 	const GenreImage = styled("img")(({ theme }) => ({
@@ -47,13 +49,13 @@ export const useStyles = () => {
 		},
 		[theme.breakpoints.down("md")]: {
 			margin: "0 auto",
-			width: "65%",
+			width: "55%",
 			height: "400px",
 			marginBottom: "30px",
 		},
 		[theme.breakpoints.down("sm")]: {
 			margin: "0 auto",
-			width: "100%",
+			width: "90%",
 			height: "400px",
 			marginBottom: "30px",
 		},
