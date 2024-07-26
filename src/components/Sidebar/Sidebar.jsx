@@ -22,7 +22,11 @@ const Sidebar = ({ setMobileOpen }) => {
 	const styles = useStyles();
 	const { data, isFetching } = useGetGenresQuery();
 	const dispatch = useDispatch();
-	const { genreIdOrCategoryName } = useSelector(state => state.genreOrCategory)
+	const { genreIdOrCategoryName } = useSelector(state => state.genreOrCategory);
+
+	useEffect(() => {
+		setMobileOpen((prev) => !prev)
+	}, [genreIdOrCategoryName])
 
 	const handleSelectGenreOrCategory = (value) => {
 		dispatch(selectGenreOrCategory(value))

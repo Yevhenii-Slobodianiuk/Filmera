@@ -5,11 +5,14 @@ export const useStyles = () => {
 
 	const Container = styled(Box)(() => ({
 		marginBottom: "20px",
-		marginLeft: "20px",
+		marginLeft: "15px",
 		display: "flex",
 		justifyContent: "center",
 		height: "490px",
-		textDecoration: "none"
+		textDecoration: "none",
+		[theme.breakpoints.down('md')]: {
+			marginLeft: "0px",
+		}
 	}));
 
 	const CustomCard = styled(Card)(() => ({
